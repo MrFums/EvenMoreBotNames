@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <RootNamespace>EvenMoreBotNames</RootNamespace>
+        <AssemblyName>EvenMoreBotNames</AssemblyName>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Library</OutputType>
+        <Version>1.0.0</Version>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <DebugType>none</DebugType>
+        <Deterministic>true</Deterministic>
+        <PathMap>$(MSBuildProjectDirectory)=/_/</PathMap>
+        <GenerateDependencyFile>false</GenerateDependencyFile>
+        <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SPTarkov.Common" Version="4.1.0" ExcludeAssets="runtime" PrivateAssets="all" />
+        <PackageReference Include="SPTarkov.DI" Version="4.1.0" ExcludeAssets="runtime" PrivateAssets="all" />
+        <PackageReference Include="SPTarkov.Reflection" Version="4.1.0" ExcludeAssets="runtime" PrivateAssets="all" />
+        <PackageReference Include="SPTarkov.Server.Core" Version="4.1.0" ExcludeAssets="runtime" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="configs\config.jsonc" CopyToOutputDirectory="PreserveNewest" />
+        <EmbeddedResource Include="configs\config.jsonc" LogicalName="EvenMoreBotNames.configs.config.jsonc" />
+        <None Update="names\*.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+</Project>

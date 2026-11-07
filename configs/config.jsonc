@@ -1,0 +1,21 @@
+{
+    "Enabled": true,
+
+    "AddUsecNames": true,
+    "AddBearNames": true,
+
+    // How many names to load. 0 = all of them (300000 each, about 39 MB of RAM).
+    "UsecNamesToLoad": 0,
+    "BearNamesToLoad": 0,
+
+    // Remove SPT's default names first
+    "ReplaceExistingNames": false,
+
+    "FixScavProfileNameCopy": true,
+
+    // Give the PMC sellers already on the flea the new names
+    "RenameExistingFleaSellers": true,
+
+    // Show how much RAM the names use in the server log
+    "LogMemoryUsage": true
+}
