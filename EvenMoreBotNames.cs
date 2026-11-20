@@ -25,6 +25,7 @@ public class ModConfig
     public bool AddBearNames { get; set; } = true;
     public int UsecNamesToLoad { get; set; }
     public int BearNamesToLoad { get; set; }
+    public int NameSeed { get; set; } = 1;
     public bool ReplaceExistingNames { get; set; }
     public bool FixScavProfileNameCopy { get; set; } = true;
     public bool RenameExistingFleaSellers { get; set; } = true;
@@ -122,13 +123,16 @@ public class NameLoader(
 
         if (limit > 0 && names.Count > limit)
         {
-            for (var i = 0; i < limit; i++)
-            {
-                var j = Random.Shared.Next(i, names.Count);
-                (names[i], names[j]) = (names[j], names[i]);
-            }
-
-            names.RemoveRange(limit, names.Count - limit);
+            // Pick by a stable hash so every start gets the same names. Mods like PBT build a
+            // profile per name, so a new random pick each start makes them redo it every time.
+            // Raising the limit keeps the names already picked and adds more.
+            names = names
+                .Select(name => (Name: name, Rank: StableHash(name, config.NameSeed)))
+                .OrderBy(entry => entry.Rank)
+                .ThenBy(entry => entry.Name, StringComparer.Ordinal)
+                .Take(limit)
+                .Select(entry => entry.Name)
+                .ToList();
         }
 
         var firstNames = botType.FirstNames;
@@ -151,6 +155,20 @@ public class NameLoader(
         }
 
         return added;
+    }
+
+    // FNV-1a with a SplitMix64 finish. string.GetHashCode changes every process, so it can't be used here.
+    private static ulong StableHash(string value, int seed)
+    {
+        var hash = 14695981039346656037UL ^ (uint)seed;
+        foreach (var c in value)
+        {
+            hash = (hash ^ c) * 1099511628211UL;
+        }
+
+        hash = (hash ^ (hash >> 30)) * 0xBF58476D1CE4E5B9UL;
+        hash = (hash ^ (hash >> 27)) * 0x94D049BB133111EBUL;
+        return hash ^ (hash >> 31);
     }
 
     private bool ClearNameCache()

@@ -5,8 +5,12 @@
     "AddBearNames": true,
 
     // How many names to load. 0 = all of them (300000 each, about 39 MB of RAM).
+    // The same number loads the same names every start. Raising it keeps those names and adds more.
     "UsecNamesToLoad": 0,
     "BearNamesToLoad": 0,
+
+    // Change this to pick a different set of names. Only matters when the numbers above aren't 0.
+    "NameSeed": 1,
 
     // Remove SPT's default names first
     "ReplaceExistingNames": false,
